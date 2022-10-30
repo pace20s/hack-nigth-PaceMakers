@@ -1,16 +1,27 @@
 import os  # For File Manipulations like get paths, rename
 from flask import Flask, request, render_template
-
 import openai
 # import wget
 # import pathlib
 import pdfplumber
 import numpy as np
-
+from twilio.rest import Client
 # PaperFilePath = "./sample2.pdf"
 
+account_sid = "AC4fe03fe7e0b561f68567b0208c6e4d68"
+auth_token = "55b1799faa0a1c9aa2911e18d5b5a701"
+client = Client(account_sid, auth_token)
 
-def showPaperSummary(paperContent):
+
+def sendMessage(message, mobNumber):
+    message = client.messages.create(body=message,
+                                     from_="+18316043309",
+                                     to="+91" + mobNumber)
+
+    print("message send" + str(message.sid))
+
+
+def showPaperSummary(paperContent, mobNum):
     tldr_tag = "\n tl;dr:"
     openai.organization = 'org-CCY2sGmfLZVuGLoQQ3I1ScxI'
     openai.api_key = "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"
@@ -26,7 +37,9 @@ def showPaperSummary(paperContent):
                                             frequency_penalty=0,
                                             presence_penalty=0,
                                             stop=["\n"])
-        print((response["choices"][0]["text"]).replace("I", "You"))
+        messageText = (response["choices"][0]["text"]).replace("I", "You")
+        sendMessage(messageText, mobNum)
+        print(messageText)
 
 
 app = Flask(__name__, static_folder="./static")
@@ -61,7 +74,8 @@ def upload():
         PaperFilePath = os.path.join(app.config['UPLOAD_FOLDER'], f.filename)
         print(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
 
-        #call the gpt3 api
+        #call the gpt3 api and send text message
         paperContent = pdfplumber.open(PaperFilePath).pages
-        showPaperSummary(paperContent)
+        showPaperSummary(paperContent, mobNumber)
+
         return "file saved"
