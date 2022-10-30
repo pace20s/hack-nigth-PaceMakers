@@ -4,17 +4,27 @@
 
 <head>
     <title>hello</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/cover/">
+    <link rel="stylesheet" href="../static/custom.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
 </head>
 
-<body>
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <label class="file">
+<body class="text-center">
+    <form class="container form-filed" action="/upload" method="post" enctype="multipart/form-data">
+        <label class="file m-1">
             <input type="file" name="file" id="file">
             <span class="file-custom"></span>
         </label>
+        <center>
+            <input type="text" class="form-control m-2 input-no-field" name="mobNumber" id="number-input"
+                placeholder="Mobile Number">
+        </center>
 
-        <input type="submit">
+        <button type="submit" class="btn btn-primary m-1">Send</button>
     </form>
 </body>
 
